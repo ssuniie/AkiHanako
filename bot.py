@@ -50,7 +50,7 @@ async def on_guild_join(guild):
                     'ขอบพระทัยที่รับน้อนมาเลี้ยงนะงับ :pray:\n'
                     + 'เริ่มต้นใช้งานด้วยการพิมพ์ ah help นะงับ'
                 ),
-                color=0x6549DA
+                color=0xf77eff
             )
             await channel.send(embed=embed)
         break
@@ -62,14 +62,15 @@ async def help(ctx, arg=None):
     if arg == None:
         embed = discord.Embed(
             title='คำสั่งของน้อนทั้งหมด',
-            color=0x6549DA)
+            color=0xf77eff
+        )
         embed.add_field(name='help', value='`ah help`')
         embed.add_field(name='fun', value='`ah help fun`')
-        embed.add_field(name='help', value='`ah help`')
 
     await ctx.send(embed=embed)
 
 
+# ? --------------------------------- FUN COMMANDS ---------------------------------
 @client.command()
 async def dick(ctx):
     size_random = random.randint(1, 10)
