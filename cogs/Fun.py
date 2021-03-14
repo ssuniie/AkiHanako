@@ -20,28 +20,40 @@ reddit = praw.Reddit(
 class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
-    
+
     # ? dick command
     @commands.command()
     async def dick(self, ctx):
         size_random = random.randint(1, 10)
         await ctx.send(f"{ctx.author.name}'s dick size is 8"+'='*size_random+'D')
-    
+
     # ? magicball command
     @commands.command()
     async def magicball(self, ctx, *, question=None):
         if question is None:
             await ctx.send('อย่าลืมใส่คำถามด้วยหล่ะนะ!')
         else:
-            with open('assets/magicball.json', encoding='utf-8') as f:
+            with open('assets/json/magicball.json', encoding='utf-8') as f:
                 all_answer = json.load(f)
 
             answer = random.choice(all_answer)
 
-            await ctx.send(
-                f'คำถาม: {question}\n'
-                + f'ตอบ: {answer}'
+            embed = discord.Embed(
+                title='ลูกแก้ววิเศษ',
+                description=f'ลูกแก้ววิเศษนี้จะตอบคำถามให้ {ctx.author.name} เอง',
+                color=0xf77eff
             )
+            embed.add_field(
+                name='คำถาม ที่เจ้าถามมา?',
+                value=question
+            )
+            embed.add_field(
+                name='คำตอบจากข้า',
+                value=answer
+            )
+            embed.timestamp = datetime.utcnow()
+
+            await ctx.send(embed=embed)
 
     # ? meme commands
     @commands.command(aliases=['memes'])
@@ -59,6 +71,7 @@ class Fun(commands.Cog):
         embed.set_footer(text='r/meme')
 
         await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(Fun(client))

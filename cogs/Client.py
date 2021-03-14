@@ -13,11 +13,11 @@ class Client(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{CLIENT_NAME} on duty!')
-        
+
         await self.client.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.listening,
-                name='.help'
+                name='ah help'
             )
         )
 
