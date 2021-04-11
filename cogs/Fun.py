@@ -1,9 +1,10 @@
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+import praw
+import random
+
 from datetime import datetime
 import os
-import random
-import praw
 import json
 
 CLIENT_NAME = os.environ['CLIENT_NAME']
@@ -21,13 +22,13 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # ? dick command
-    @commands.command()
+    # dick command
+    @commands.command(aliases=['penis'])
     async def dick(self, ctx):
         size_random = random.randint(1, 10)
         await ctx.send(f"{ctx.author.name}'s dick size is 8"+'='*size_random+'D')
 
-    # ? magicball command
+    # magicball command
     @commands.command()
     async def magicball(self, ctx, *, question=None):
         if question is None:
@@ -55,9 +56,10 @@ class Fun(commands.Cog):
 
             await ctx.send(embed=embed)
 
-    # ? meme commands
+    # meme command
     @commands.command(aliases=['memes'])
     async def meme(self, ctx):
+        global submission
         memes_submissions = reddit.subreddit('memes').hot()
         post_to_pick = random.randint(1, 100)
         for i in range(0, post_to_pick):
@@ -71,6 +73,10 @@ class Fun(commands.Cog):
         embed.set_footer(text='r/meme')
 
         await ctx.send(embed=embed)
+
+    # ping command
+    @commands.command()
+    async def ping(self, ctx): await ctx.send('Pong!')
 
 
 def setup(client):

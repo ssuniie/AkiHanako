@@ -1,15 +1,17 @@
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+
 import os
 
-CLIENT_NAME = os.environ['CLIENT_NAME']
+# CLIENT_NAME = os.environ['CLIENT_NAME']
+CLIENT_NAME = 'AkiHanako'
 
 
 class Client(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # * When client is online.
+    # When client is online.
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{CLIENT_NAME} on duty!')
@@ -21,7 +23,7 @@ class Client(commands.Cog):
             )
         )
 
-    # * When client is join sthe server.
+    # When client is joins the server.
     @ commands.Cog.listener()
     async def on_guild_join(self, guild):
         for channel in guild.text_channels:

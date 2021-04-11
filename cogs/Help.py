@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import os
 
 
 class Help(commands.Cog):
@@ -21,10 +20,14 @@ class Help(commands.Cog):
     @help.group()
     async def fun(self, ctx):
         embed = discord.Embed(
-            name='Fun commands',
-            color=0xf77eff
+            title='Fun commands',
+            color=0xf77eff,
+            description='dick/penis meme/memes'
         )
-        embed.add_field()
+        embed.add_field(name='usage', value='ah {commands}')
+
+        await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(Help(client))
