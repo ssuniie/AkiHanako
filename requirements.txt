@@ -1,11 +1,3 @@
 discord
 praw
-hentai
-Faker
-beautifulsoup4
 pytz
-cssselect
-lxml
-pyee
-pyppeteer
-pyquery
