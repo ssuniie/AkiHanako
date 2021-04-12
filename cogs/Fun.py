@@ -22,6 +22,11 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # ping command
+    @commands.command()
+    async def ping(self, ctx):
+        await ctx.send('Pong!')
+
     # dick command
     @commands.command(aliases=['penis'])
     async def dick(self, ctx):
