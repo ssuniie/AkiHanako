@@ -10,39 +10,64 @@ class Mod(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    async def thanos_execute(self, ctx, list_of_unlucky_members, time_in_second, embed):
+            # message thats show who is getting execute right now!
+            msg = await ctx.send('คนที่กำลังโดนผลจากการดีดนิ้วในครั้งนี้: ')
+
+            # mute every lucky members
+            for user in list_of_unlucky_members:
+                await msg.edit(content=f'คนที่กำลังโดนผลจากการดีดนิ้วในครั้งนี้: {user.name}')
+                await user.edit(mute=True, deafen=True)
+
+            # send summary message
+            await ctx.send(embed=embed)
+
+            # countdown starts here!
+            await asyncio.sleep(time_in_second)
+
+            # unmute every unlucky members
+            for user in list_of_unlucky_members:
+                await user.edit(mute=False, deafen=False)
+
     # Thanos Command
     @commands.command()
     @commands.cooldown(1, 60 * 60, commands.BucketType.guild)
     async def thanos(self, ctx, time_in_second=None):
+        print('Thanos execute!')
+        
+        # command will execute if ctx.author is ctx.guild.owner
         if ctx.author is ctx.guild.owner:
             # get voice channel from guild.owner
             voice_channel = ctx.author.voice.channel
 
-            # get total of unlucky_members
+            # get amount of unlucky_members in total
             # unlucky_members will be half of voice channel in total users
             total_unlucky_members = math.ceil(len(voice_channel.members) / 2)
-            
+
             # create list and string of unlucky_members to store names and attributes
             list_of_unlucky_members = []
             unlucky_members_name = ''
 
-            # define the final time (default is 20 seconds)
+            # define the final time (default is 20 seconds, maximum is 120 seconds)
             if time_in_second is None:
                 time_in_second = 20
                 pass
-            
+            elif time_in_second > 120:
+                time_in_second = 120
+                pass
+
             # command execute here!
             while total_unlucky_members != 0:
                 # u = some random unlucky guys
                 u = random.choice(voice_channel.members)
-                
+
                 # command will not add bot and ctx.guild.owner to list
                 if u.bot:
                     continue
                 if u is ctx.guild.owner:
                     await ctx.send('การสุ่มครั้งนี้ มีเจ้าของเซิฟอยู่ด้วย แต่เจ้าของเซิฟไม่เป็นไร')
                     continue
-                
+
                 # this if statement create for
                 # to prevent duplicate users in list
                 if u not in list_of_unlucky_members:
@@ -55,28 +80,22 @@ class Mod(commands.Cog):
                 else:
                     print(f'{u} is already in unlucky member list')
                     pass
-            
+
             # message of total unlucky members
             embed = discord.Embed(
-                title=f'สรุปบัญชีคนโดนดีดนิ้ว {total_unlucky_members} คน)',
-                description=unlucky_members_name
+                title=f'สรุปบัญชีคนโดนดีดนิ้ว',
+                description=f'ระยะเวลา: {time_in_second} วินาที\n'
+                + f'จำนวนที่โดนผลจากการดีดนิ้วทั้งหมด: {total_unlucky_members} คน'
+
+            )
+            embed.add_field(
+                name='ผู้โชคร้ายทั้งหมด',
+                value=total_unlucky_members
             )
 
-            # message thats show who is getting execute right now!
-            msg = await ctx.send('คนที่กำลังโดนดีดนิ้วในตอนนี้: ')
-            for user in list_of_unlucky_members:
-                await msg.edit(content=f'คนที่กำลังโดนดีดนิ้วในตอนนี้: {user.name}')
-                await user.edit(mute=True, deafen=True)
-            
-            # send summary message
-            await ctx.send(embed=embed)
+            task = await asyncio.create_task(thanos_execute(ctx, list_of_unlucky_members, time_in_second, embed))
+            await asyncio.run(task)
 
-            # countdown starts here!
-            await asyncio.sleep(time_in_second)
-
-            # free every unlucky members
-            for user in list_of_unlucky_members:
-                await user.edit(mute=False, deafen=False)
 
     # detect cooldown error of thanos command
     @thanos.error
