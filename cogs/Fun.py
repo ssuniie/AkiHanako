@@ -31,7 +31,7 @@ class Fun(commands.Cog):
     @commands.command(aliases=['penis'])
     async def dick(self, ctx):
         size_random = random.randint(1, 10)
-        await ctx.send(f"{ctx.author.name}'s dick size is 8"+'='*size_random+'D')
+        await ctx.send(f"{ctx.author.name}'s dick size is 8" + '=' * size_random + 'D')
 
     # magic ball command
     @commands.command()
@@ -65,7 +65,6 @@ class Fun(commands.Cog):
     # meme command
     @commands.command(aliases=['memes'])
     async def meme(self, ctx):
-        global submission
         memes_submissions = reddit.subreddit('memes').hot()
         post_to_pick = random.randint(1, 100)
         for i in range(0, post_to_pick):
@@ -81,9 +80,8 @@ class Fun(commands.Cog):
         await ctx.send(embed=embed)
 
     # programmerhumor command
-    @commands.command()
+    @commands.command(aliases=['pghm'])
     async def programmerhumor(self, ctx):
-        global submission
         submissions = reddit.subreddit('programmerhumor').hot()
         post_to_pick = random.randint(1, 100)
         for i in range(0, post_to_pick):
@@ -101,7 +99,6 @@ class Fun(commands.Cog):
     # badcode command
     @commands.command()
     async def badcode(self, ctx):
-        global submission
         submissions = reddit.subreddit('badcode').hot()
         post_to_pick = random.randint(1, 100)
         for i in range(0, post_to_pick):
