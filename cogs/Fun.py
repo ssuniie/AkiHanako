@@ -80,6 +80,42 @@ class Fun(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    # programmerhumor command
+    @commands.command()
+    async def programmerhumor(self, ctx):
+        global submission
+        submissions = reddit.subreddit('programmerhumor').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in submissions if not x.stickied)
+
+        embed = discord.Embed(
+            title=submission.title
+        )
+        embed.set_image(url=submission.url)
+        embed.timestamp = datetime.utcnow()
+        embed.set_footer(text='r/programmerhumor')
+
+        await ctx.send(embed=embed)
+
+    # badcode command
+    @commands.command()
+    async def badcode(self, ctx):
+        global submission
+        submissions = reddit.subreddit('badcode').hot()
+        post_to_pick = random.randint(1, 100)
+        for i in range(0, post_to_pick):
+            submission = next(x for x in submissions if not x.stickied)
+
+        embed = discord.Embed(
+            title=submission.title
+        )
+        embed.set_image(url=submission.url)
+        embed.timestamp = datetime.utcnow()
+        embed.set_footer(text='r/badcode')
+
+        await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(Fun(client))
