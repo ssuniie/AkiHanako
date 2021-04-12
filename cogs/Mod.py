@@ -91,7 +91,8 @@ class Mod(commands.Cog):
             elif time_in_second > 120:
                 time_in_second = 120
                 pass
-
+            
+            # create and run task
             task = await asyncio.create_task(thanos_execute(ctx, voice_channel, total_unlucky_members, time_in_second))
             await asyncio.run(task)
 
