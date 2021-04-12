@@ -10,15 +10,12 @@ class Mod(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    async def thanos_execute(self, ctx, voice_channel, total_unlucky_members, time_in_second):
-        print('Thanos Executed!')
-
     # Thanos Command
     @commands.command()
     @commands.cooldown(1, 60 * 60, commands.BucketType.guild)
     async def thanos(self, ctx, time_in_seconds=None):
         # command will execute if ctx.author is ctx.guild.owner
-        if ctx.author is not ctx.guild.owner:
+        if ctx.author is ctx.guild.owner:
             # get voice channel from guild.owner
             voice_channel = ctx.author.voice.channel
 
@@ -28,7 +25,7 @@ class Mod(commands.Cog):
 
             # define the final time (default is 20 seconds, maximum is 120 seconds)
             if time_in_seconds is None:
-                time_in_seconds = 1
+                time_in_seconds = 20
                 pass
             elif time_in_seconds > 120:
                 time_in_seconds = 120
@@ -69,12 +66,12 @@ class Mod(commands.Cog):
             embed = discord.Embed(
                 title=f'สรุปบัญชีคนโดนดีดนิ้ว',
                 description=f'ระยะเวลา: {time_in_seconds} วินาที\n'
-                + f'จำนวนที่โดนผลจากการดีดนิ้วทั้งหมด: {total_unlucky_members} คน'
+                + f'จำนวนที่โดนผลจากการดีดนิ้วทั้งหมด: {len(list_of_unlucky_members)} คน'
 
             )
             embed.add_field(
                 name='ผู้โชคร้ายทั้งหมด',
-                value=total_unlucky_members
+                value=unlucky_members_name
             )
 
             # message thats show who is getting execute right now!
@@ -84,6 +81,7 @@ class Mod(commands.Cog):
             for user in list_of_unlucky_members:
                 await msg.edit(content=f'คนที่กำลังโดนผลจากการดีดนิ้วในครั้งนี้: {user.name}')
                 await user.edit(mute=True, deafen=True)
+                await asyncio.sleep(0.5)
 
             # send summary message
             await ctx.send(embed=embed)
