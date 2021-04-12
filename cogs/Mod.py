@@ -40,6 +40,8 @@ class Mod(commands.Cog):
             else:
                 print(f'{u} is already in unlucky member list')
                 pass
+        
+        print(list_of_unlucky_members)
 
         # message of total unlucky members
         embed = discord.Embed(
@@ -76,7 +78,7 @@ class Mod(commands.Cog):
     @commands.cooldown(1, 60 * 60, commands.BucketType.guild)
     async def thanos(self, ctx, time_in_second=None):
         # command will execute if ctx.author is ctx.guild.owner
-        if ctx.author is ctx.guild.owner:
+        if ctx.author is not ctx.guild.owner:
             # get voice channel from guild.owner
             voice_channel = ctx.author.voice.channel
 
