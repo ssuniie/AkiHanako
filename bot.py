@@ -18,24 +18,20 @@ TOKEN = os.environ['CLIENT_TOKEN']
 client.remove_command('help')
 
 
-# Is it me? check
-def is_it_owner(ctx):
-    return ctx.author.id == 254515724804947969
-
-
 # Reload Cogs
 @client.command()
-@commands.check(is_it_owner)
+@commands.is_owner()
+@commands.dm_only()
 async def reload(ctx, extension):
-    if not ctx.guild:
-        if extension.endswith('.py'):
-            client.unload_extension(f'cogs.{extension[:-3]}')
-            client.load_extension(f'cogs.{extension[:-3]}')
-        else:
-            client.unload_extension(f'cogs.{extension}')
-            client.load_extension(f'cogs.{extension}')
+    if extension.endswith('.py'):
+        client.unload_extension(f'cogs.{extension[:-3]}')
+        client.load_extension(f'cogs.{extension[:-3]}')
+    else:
+        client.unload_extension(f'cogs.{extension}')
+        client.load_extension(f'cogs.{extension}')
 
-        print(f'cogs.{extension} reloaded!')
+    await ctx.send(f'cogs.{extension} reloaded!')
+    print(f'cogs.{extension} reloaded!')
 
 
 # ! Load all Cogs file

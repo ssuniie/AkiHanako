@@ -18,6 +18,7 @@ class Mod(commands.Cog):
             voice_channel = ctx.author.voice.channel
             total_unlucky_members = math.ceil(len(voice_channel.members) / 2)
             list_of_unlucky_members = []
+            unlucky_members_name = ''
 
             while total_unlucky_members != 0:
                 u = random.choice(voice_channel.members)
@@ -29,15 +30,13 @@ class Mod(commands.Cog):
 
                 if u not in list_of_unlucky_members:
                     list_of_unlucky_members.append(u)
+                    unlucky_members_name += f'{u.name} '
                     total_unlucky_members -= 1
+                    print(f'{u} added to the list')
                     continue
                 else:
                     print(f'{u} is already in unlucky member list')
                     pass
-
-            unlucky_members_name = ''
-            for user in list_of_unlucky_members:
-                unlucky_members_name += f'{user.name} '
 
             embed = discord.Embed(
                 title=f'สรุปบัญชีคนโดนดีดนิ้ว {total_unlucky_members} คน)',
@@ -52,7 +51,10 @@ class Mod(commands.Cog):
             for user in list_of_unlucky_members:
                 await msg.edit(content=f'คนที่กำลังโดนดีดนิ้วในตอนนี้: {user.name}')
                 await user.edit(mute=True, deafen=True)
-                await asyncio.sleep(time_in_second)
+
+            await asyncio.sleep(time_in_second)
+
+            for user in list_of_unlucky_members:
                 await user.edit(mute=False, deafen=False)
 
             await ctx.send(embed=embed)
@@ -71,6 +73,16 @@ class Mod(commands.Cog):
         await member.kick(reason=reasons)
         await member.send(
             f'คุณถูกเตะออกจาก {ctx.guild.name}'
+            + f'เหตุผล: {reasons}'
+        )
+
+    # ban command
+    @commands.command()
+    @commands.has_permissions(ban_members=True)
+    async def ban(self, ctx, member: discord.Member, *, reasons=None):
+        await member.ban(reason=reasons)
+        await member.send(
+            f'คุณถูกแบนออกจาก {ctx.guild.name}'
             + f'เหตุผล: {reasons}'
         )
 

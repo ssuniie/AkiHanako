@@ -33,33 +33,34 @@ class Fun(commands.Cog):
         size_random = random.randint(1, 10)
         await ctx.send(f"{ctx.author.name}'s dick size is 8"+'='*size_random+'D')
 
-    # magicball command
+    # magic ball command
     @commands.command()
     async def magicball(self, ctx, *, question=None):
         if question is None:
             await ctx.send('อย่าลืมใส่คำถามด้วยหล่ะนะ!')
-        else:
-            with open('assets/json/magicball.json', encoding='utf-8') as f:
-                all_answer = json.load(f)
+            return
 
-            answer = random.choice(all_answer)
+        with open('assets/json/magicball.json', encoding='utf-8') as f:
+            all_answer = json.load(f)
 
-            embed = discord.Embed(
-                title='ลูกแก้ววิเศษ',
-                description=f'ลูกแก้ววิเศษนี้จะตอบคำถามให้ {ctx.author.name} เอง',
-                color=0xf77eff
-            )
-            embed.add_field(
-                name='คำถาม ที่เจ้าถามมา?',
-                value=question
-            )
-            embed.add_field(
-                name='คำตอบจากข้า',
-                value=answer, inline=False
-            )
-            embed.timestamp = datetime.utcnow()
+        answer = random.choice(all_answer)
 
-            await ctx.send(embed=embed)
+        embed = discord.Embed(
+            title='ลูกแก้ววิเศษ',
+            description=f'ลูกแก้ววิเศษนี้จะตอบคำถามให้ {ctx.author.name} เอง',
+            color=0xf77eff
+        )
+        embed.add_field(
+            name='คำถาม ที่เจ้าถามมา?',
+            value=question
+        )
+        embed.add_field(
+            name='คำตอบจากข้า',
+            value=answer, inline=False
+        )
+        embed.timestamp = datetime.utcnow()
+
+        await ctx.send(embed=embed)
 
     # meme command
     @commands.command(aliases=['memes'])

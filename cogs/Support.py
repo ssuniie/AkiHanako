@@ -14,7 +14,7 @@ class Support(commands.Cog):
         )
         embed.add_field(
             name='Ko-Fi',
-            value='(https://ko-fi.com/ssuniie)[https://ko-fi.com/ssuniie]'
+            value='[https://ko-fi.com/ssuniie](https://ko-fi.com/ssuniie)'
         )
 
         await ctx.send(embed=embed)
